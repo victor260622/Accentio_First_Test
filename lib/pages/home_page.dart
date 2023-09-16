@@ -27,51 +27,63 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Book Widgets'),
         ),
         body: ListView.builder(
-          itemCount: _items.length,
-          itemBuilder: (context, index) {
-            final book = _items[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: GestureDetector(
-                onTap: () => navigateToBook(book),
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(book["name"],
-                                style: Theme.of(context).textTheme.titleMedium),
-                            Text(
-                              book["authorName"],
-                              style: Theme.of(context).textTheme.titleSmall,
+              itemCount: _items.length,
+              itemBuilder: (context, index) {
+                final book = _items[index];
+                _items[index]['isFavorite'] = false;
+                return 
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      child: GestureDetector(
+                        onTap: () => navigateToBook(book),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(18),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(book["name"],
+                                        style: Theme.of(context).textTheme.titleMedium),
+                                    Text(
+                                      book["authorName"],
+                                      style: Theme.of(context).textTheme.titleSmall,
+                                    ),
+                                    Text(
+                                      book["releaseDate"],
+                                      style: Theme.of(context).textTheme.titleSmall,
+                                    ),
+                                  ],
+                                ),
+                                TextButton(
+                                  onPressed: () => navigateToBook(book),
+                                  child: const Text('Read Book'),
+                                ),
+                              ],
                             ),
-                            Text(
-                              book["releaseDate"],
-                              style: Theme.of(context).textTheme.titleSmall,
-                            ),
-                          ],
+                          ),
                         ),
-                        TextButton(
-                          onPressed: () => navigateToBook(book),
-                          child: const Text('Read Book'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ));
+                      ),
+                    );
+              },
+            ),
+          );
   }
 
   void navigateToBook(book) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BookDetailPage(book: book),
+      ),
+    );
+  }
+  void navigateToFavorites(book) {
+    book["isFavorite"] ? book : '';
     Navigator.push(
       context,
       MaterialPageRoute(
